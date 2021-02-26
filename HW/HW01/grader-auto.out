@@ -1,0 +1,167 @@
+extraCredit: 0
+fatalError: false
+maxExtraCredit: 0
+maxTotalPoints: 6
+messages: []
+mode: auto
+parts:
+- description: ''
+  extraCredit: false
+  maxPoints: 3
+  maxSeconds: 5
+  messages: []
+  name: 1a-1-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 3
+  maxSeconds: 5
+  messages: []
+  name: 1b-1-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: true
+  maxPoints: -1
+  maxSeconds: 5
+  messages: []
+  name: 1b-2-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2a-0-basic
+  points: 1
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 3
+  maxSeconds: 5
+  messages: []
+  name: 2a-1-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2b-0-basic
+  points: 1
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 2
+  maxSeconds: 5
+  messages: []
+  name: 2b-1-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages:
+  - 'Exception thrown: <class ''NotImplementedError''> -- '
+  - "  File \"/Users/beta/Desktop/POSTECH/2021/CSED342/HW/HW01/grader.py\", line 98,\
+    \ in test\n    grader.requireIsEqual(1, submission.countMutatedSentences('a a\
+    \ a a a'))\n"
+  - "  File \"/Users/beta/Desktop/POSTECH/2021/CSED342/HW/HW01/submission.py\", line\
+    \ 96, in countMutatedSentences\n    raise NotImplementedError  # remove this line\
+    \ before writing code\n"
+  name: 2c-0-basic
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 3
+  maxSeconds: 5
+  messages:
+  - 'Exception thrown: <class ''NotImplementedError''> -- '
+  - "  File \"/Users/beta/Desktop/POSTECH/2021/CSED342/HW/HW01/grader.py\", line 116,\
+    \ in <lambda>\n    return lambda: all(get_gen())\n"
+  - "  File \"/Users/beta/Desktop/POSTECH/2021/CSED342/HW/HW01/grader.py\", line 110,\
+    \ in get_gen\n    pred = submission.countMutatedSentences(sentence)\n"
+  - "  File \"/Users/beta/Desktop/POSTECH/2021/CSED342/HW/HW01/submission.py\", line\
+    \ 96, in countMutatedSentences\n    raise NotImplementedError  # remove this line\
+    \ before writing code\n"
+  name: 2c-1-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 3
+  maxSeconds: 5
+  messages:
+  - 'Exception thrown: <class ''NotImplementedError''> -- '
+  - "  File \"/Users/beta/Desktop/POSTECH/2021/CSED342/HW/HW01/grader.py\", line 116,\
+    \ in <lambda>\n    return lambda: all(get_gen())\n"
+  - "  File \"/Users/beta/Desktop/POSTECH/2021/CSED342/HW/HW01/grader.py\", line 110,\
+    \ in get_gen\n    pred = submission.countMutatedSentences(sentence)\n"
+  - "  File \"/Users/beta/Desktop/POSTECH/2021/CSED342/HW/HW01/submission.py\", line\
+    \ 96, in countMutatedSentences\n    raise NotImplementedError  # remove this line\
+    \ before writing code\n"
+  name: 2c-2-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2d-0-basic
+  points: 1
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2d-1-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2e-0-basic
+  points: 1
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2e-1-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2f-0-basic
+  points: 1
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2f-1-hidden
+  points: 0
+  seconds: 0
+- description: ''
+  extraCredit: false
+  maxPoints: 1
+  maxSeconds: 5
+  messages: []
+  name: 2f-2-hidden
+  points: 0
+  seconds: 0
+totalPoints: 5
