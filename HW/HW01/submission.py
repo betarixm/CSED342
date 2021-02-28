@@ -96,7 +96,7 @@ def countMutatedSentences(sentence):
     words = sentence.split()
     distinct_words = set(words)
 
-    pairs = {word: set() for word in set(distinct_words)}
+    pairs = {word: set() for word in distinct_words}
     cache = [{j: None for j in distinct_words} for i in range(len(words))]
 
     for cur_word, next_word in zip(words[:-1], words[1:]):
