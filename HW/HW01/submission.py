@@ -93,7 +93,28 @@ def countMutatedSentences(sentence):
     - You should apply dynamic programming for efficiency.
     """
     # BEGIN_YOUR_ANSWER (our solution is 17 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    words = sentence.split()
+    distinct_words = set(words)
+
+    pairs = {word: set() for word in set(distinct_words)}
+    cache = [{j: None for j in distinct_words} for i in range(len(words))]
+
+    for cursor, next_word in zip(words[:-1], words[1:]):
+        pairs[cursor].add(next_word)
+
+    def count_mutate_sentences(target_word: str, current_length: int, target_length: int):
+        if current_length == target_length:
+            return 1
+        else:
+            result = 0
+            for word in pairs[target_word]:
+                if cache[current_length - 1][word] is None:
+                    cache[current_length - 1][word] = count_mutate_sentences(word, current_length + 1, target_length)
+                result += cache[current_length - 1][word]
+
+            return result
+
+    return sum([count_mutate_sentences(word, 1, len(words)) for word in distinct_words])
     # END_YOUR_ANSWER
 
 ############################################################
