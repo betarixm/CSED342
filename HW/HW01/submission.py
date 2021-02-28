@@ -99,8 +99,8 @@ def countMutatedSentences(sentence):
     pairs = {word: set() for word in set(distinct_words)}
     cache = [{j: None for j in distinct_words} for i in range(len(words))]
 
-    for cursor, next_word in zip(words[:-1], words[1:]):
-        pairs[cursor].add(next_word)
+    for cur_word, next_word in zip(words[:-1], words[1:]):
+        pairs[cur_word].add(next_word)
 
     def count_mutate_sentences(target_word: str, current_length: int, target_length: int):
         if current_length == target_length:
