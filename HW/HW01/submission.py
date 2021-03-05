@@ -17,7 +17,7 @@ def problem_1b():
     return one of [1, 2, 3, 4]
     """
     # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-    return 3
+    return 4
     # END_YOUR_ANSWER
 
 ############################################################
@@ -142,6 +142,7 @@ def incrementSparseVector(v1, scale, v2):
     # BEGIN_YOUR_ANSWER (our solution is 2 lines of code, but don't worry if you deviate from this)
     for v2_key in v2:
         v1[v2_key] += scale * v2[v2_key]
+    return v1
     # END_YOUR_ANSWER
 
 ############################################################
