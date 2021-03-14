@@ -65,8 +65,15 @@ def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta)
         return 1 / (1 + math.exp(-n))
 
     # BEGIN_YOUR_ANSWER (our solution is 14 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
-    # END_YOUR_ANSWER
+    def nll_grad(_phi, _y):
+        return -_y * sigmoid(-_y * dotProduct(_phi, weights))
+
+    for _ in range(numIters):
+        for x, y in trainExamples:
+            phi = featureExtractor(x)
+            increment(weights, -eta * nll_grad(phi, y), phi)
+
+# END_YOUR_ANSWER
     return weights
 
 ############################################################
