@@ -131,6 +131,46 @@ def kmeans(examples, K, maxIters):
             final reconstruction loss)
     '''
     # BEGIN_YOUR_ANSWER (our solution is 40 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+
+    cache_point = {}
+    for key, value in enumerate(examples):
+        examples[key] = dict(value)
+        cache_point[key] = dotProduct(examples[key], examples[key])
+
+    assignments = {}
+    centers = {i: s.copy() for i, s in enumerate(random.sample(examples, K))}
+    total_cost = 0
+    prev_cost = -1
+
+    def dist(p_dot, q_dot, p, q):
+        return (p_dot + q_dot - 2 * dotProduct(p, q)) ** 0.5
+
+    for __ in range(maxIters):
+        if prev_cost == total_cost:
+            break
+
+        total_cost, prev_cost = 0, total_cost
+
+        group_list = [[] for _ in range(K)]
+        counter_list = [Counter() for _ in range(K)]
+
+        cache_center = {idx: dotProduct(center, center) for idx, center in centers.items()}
+
+        for idx_point, point in enumerate(examples):
+            dist_list = [(idx, dist(cache_point[idx_point], cache_center[idx], point, center)) for idx, center in centers.items()]
+            idx_center, cost = min(dist_list, key=lambda x: x[1])
+
+            total_cost += cost
+
+            assignments[idx_point] = idx_center
+            group_list[idx_center].append(idx_point)
+
+            for key, value in point.items():
+                counter_list[idx_center][key] += value
+
+        for idx_center in range(K):
+            centers[idx_center] = {key: value / len(group_list[idx_center]) for key, value in dict(counter_list[idx_center]).items()}
+
+    return centers, assignments, total_cost
     # END_YOUR_ANSWER
 
