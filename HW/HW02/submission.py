@@ -88,7 +88,8 @@ def extractBigramFeatures(x):
     {('am', 'what'): 1, 'what': 1, ('I', 'am'): 2, 'I': 2, ('what', 'I'): 1, 'am': 2, ('<s>', 'I'): 1, ('am', '</s>'): 1}
     """
     # BEGIN_YOUR_ANSWER (our solution is 5 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    words = f"<s> {x} </s>".split()
+    phi = dict(Counter(words[1:-1] + [(cur_word, next_word) for cur_word, next_word in zip(words[:-1], words[1:])]))
     # END_YOUR_ANSWER
     return phi
 
@@ -103,7 +104,7 @@ def problem_3a_1():
     ({'mu0': 1, 'mu1': -1}, {'mu0': 1, 'mu1': 2})
     """
     # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    return {'mu0': 1, 'mu1': 0}, {'mu0': 1, 'mu1': 1.5}
     # END_YOUR_ANSWER
 
 def problem_3a_2():
@@ -113,7 +114,7 @@ def problem_3a_2():
     ({'mu0': -2, 'mu1': 0}, {'mu0': 3, 'mu1': -1})
     """
     # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    return {'mu0': 0, 'mu1': 0.5}, {'mu0': 2, 'mu1': 1}
     # END_YOUR_ANSWER
 
 ############################################################
