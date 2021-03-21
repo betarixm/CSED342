@@ -143,7 +143,7 @@ def kmeans(examples, K, maxIters):
     prev_cost = -1
 
     def dist(p_dot, q_dot, p, q):
-        return (p_dot + q_dot - 2 * dotProduct(p, q)) ** 0.5
+        return p_dot + q_dot - 2 * dotProduct(p, q)
 
     for __ in range(maxIters):
         if prev_cost == total_cost:
