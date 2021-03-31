@@ -48,7 +48,7 @@ class VowelInsertionProblem(util.SearchProblem):
 
     def startState(self):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        return 0, self.queryWords[0]
+        return 0, self.queryWords[0], self.queryWords[1]
         # END_YOUR_ANSWER
 
     def isEnd(self, state):
@@ -58,10 +58,11 @@ class VowelInsertionProblem(util.SearchProblem):
 
     def succAndCost(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 9 lines of code, but don't worry if you deviate from this)
-        p_idx, p_action = state
-        possible_fills = self.possibleFills(self.queryWords[p_idx + 1])
-        words = possible_fills.copy() if len(possible_fills) != 0 else {self.queryWords[p_idx + 1]}
-        return [(_, (p_idx + 1, _), self.bigramCost(p_action, _)) for _ in words]
+        idx, p_action, n_action = state
+        idx += 1
+        possible_fills = self.possibleFills(n_action)
+        words = possible_fills.copy() if len(possible_fills) != 0 else {n_action}
+        return [(_, (idx, _, self.queryWords[idx]), self.bigramCost(p_action, _)) for _ in words]
         # END_YOUR_ANSWER
 
 def insertVowels(queryWords, bigramCost, possibleFills):
