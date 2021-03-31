@@ -18,7 +18,7 @@ class SegmentationProblem(util.SearchProblem):
 
     def isEnd(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        return  len(state) == 0
+        return len(state) == 0
         # END_YOUR_ANSWER
 
     def succAndCost(self, state):
