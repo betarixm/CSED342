@@ -13,17 +13,17 @@ class SegmentationProblem(util.SearchProblem):
 
     def startState(self):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        return self.query
         # END_YOUR_ANSWER
 
     def isEnd(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        return  len(state) == 0
         # END_YOUR_ANSWER
 
     def succAndCost(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 5 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        return [(state[:_], state[_:], self.unigramCost(state[:_])) for _ in range(len(state), 0, -1)]
         # END_YOUR_ANSWER
 
 def segmentWords(query, unigramCost):
@@ -34,7 +34,7 @@ def segmentWords(query, unigramCost):
     ucs.solve(SegmentationProblem(query, unigramCost))
 
     # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    return ' '.join(ucs.actions)
     # END_YOUR_ANSWER
 
 ############################################################
