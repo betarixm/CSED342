@@ -123,28 +123,34 @@ def segmentAndInsert(query, bigramCost, possibleFills):
 class SimpleProblem(util.SearchProblem):
     def __init__(self):
         # BEGIN_YOUR_ANSWER (our solution is 4 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        self.start = "A"
         # END_YOUR_ANSWER
 
     def startState(self):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        return self.start
         # END_YOUR_ANSWER
 
     def isEnd(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        return state == "C"
         # END_YOUR_ANSWER
 
     def succAndCost(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 3 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        if state == "A":
+            return [("A->B", "B", 3), ("A->X", "X", 1)]
+        elif state == "B":
+            return [("B->C", "C", 1)]
+        elif state == "X":
+            return [("X->B", "B", 1)]
         # END_YOUR_ANSWER
 
 
 def admissibleButInconsistentHeuristic(state):
     # BEGIN_YOUR_ANSWER (our solution is 2 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    h = {"A": 3, "B": 0, "C": 0, "X": 2}
+    return h[state]
     # END_YOUR_ANSWER
 
 # Problem 4b: Apply a heuristic function to the joint segmentation-and-insertion problem
