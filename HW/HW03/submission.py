@@ -162,7 +162,22 @@ def makeWordCost(bigramCost, wordPairs):
     :returns: wordCost, which is a function from word to cost
     """
     # BEGIN_YOUR_ANSWER (our solution is 12 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    cache = {}
+    bigram_cache = {}
+
+    def _bigramCost(a, b):
+        if b not in bigram_cache:
+            bigram_cache[b] = {}
+        if a not in bigram_cache[b]:
+            bigram_cache[b][a] = bigramCost(a, b)
+        return bigram_cache[b][a]
+
+    def word_cost(x):
+        if x not in cache:
+            cache[x] = min([_bigramCost(pair[0], x) for pair in wordPairs if pair[1] == x])
+        return cache[x]
+
+    return word_cost
     # END_YOUR_ANSWER
 
 class RelaxedProblem(util.SearchProblem):
@@ -173,22 +188,39 @@ class RelaxedProblem(util.SearchProblem):
 
     def startState(self):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        return 0, self.query, wordsegUtil.SENTENCE_BEGIN
         # END_YOUR_ANSWER
 
     def isEnd(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        return len(state[1]) == 0
         # END_YOUR_ANSWER
 
     def succAndCost(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 5 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        idx, query, prev_word = state
+        result = []
+        for pre, post in [(query[:_], query[_:]) for _ in range(len(query), 0, -1)]:
+            possible_fills = self.possibleFills(pre)
+            if possible_fills:
+                word, cost = min([(w, self.wordCost(w)) for w in possible_fills], key=lambda x: x[1])
+                result += [(word, (idx + 1, post, word), cost)]
+        return result
         # END_YOUR_ANSWER
 
 def makeHeuristic(query, wordCost, possibleFills):
     # BEGIN_YOUR_ANSWER (our solution is 7 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    dp = util.DynamicProgramming(RelaxedProblem(query, wordCost, possibleFills))
+    cache = {}
+
+    def f(x):
+        if x[2] not in cache:
+            cache[x[2]] = {}
+        if x[1] not in cache[x[2]]:
+            cache[x[2]][x[1]] = dp(x)
+        return cache[x[2]][x[1]]
+
+    return f
     # END_YOUR_ANSWER
 
 def fastSegmentAndInsert(query, bigramCost, wordCost, possibleFills):
@@ -196,7 +228,9 @@ def fastSegmentAndInsert(query, bigramCost, wordCost, possibleFills):
         return ''
 
     # BEGIN_YOUR_ANSWER (our solution is 4 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    ucs = util.UniformCostSearch(verbose=0)
+    ucs.solve(JointSegmentationInsertionProblem(query, bigramCost, possibleFills), heuristic=makeHeuristic(query, wordCost, possibleFills))
+    return ' '.join(ucs.actions)
     # END_YOUR_ANSWER
 
 ############################################################
