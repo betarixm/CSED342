@@ -87,20 +87,20 @@ class JointSegmentationInsertionProblem(util.SearchProblem):
 
     def startState(self):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        return 0, self.query, wordsegUtil.SENTENCE_BEGIN
+        return self.query, wordsegUtil.SENTENCE_BEGIN
         # END_YOUR_ANSWER
 
     def isEnd(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        return len(state[1]) == 0
+        return len(state[0]) == 0
         # END_YOUR_ANSWER
 
     def succAndCost(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 6 lines of code, but don't worry if you deviate from this)
-        idx, query, prev_word = state
+        query, prev_word = state
         result = []
         for pre, post in [(query[:_], query[_:]) for _ in range(len(query), 0, -1)]:
-            result += [(word, (idx + 1, post, word), self.bigramCost(prev_word, word)) for word in self.possibleFills(pre).copy()]
+            result += [(word, (post, word), self.bigramCost(prev_word, word)) for word in self.possibleFills(pre).copy()]
         return result
         # END_YOUR_ANSWER
 
@@ -188,7 +188,7 @@ class RelaxedProblem(util.SearchProblem):
 
     def startState(self):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        return 0, self.query, wordsegUtil.SENTENCE_BEGIN
+        return self.query,
         # END_YOUR_ANSWER
 
     def isEnd(self, state):
@@ -198,13 +198,13 @@ class RelaxedProblem(util.SearchProblem):
 
     def succAndCost(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 5 lines of code, but don't worry if you deviate from this)
-        idx, query, prev_word = state
+        query = state[0]
         result = []
         for pre, post in [(query[:_], query[_:]) for _ in range(len(query), 0, -1)]:
             possible_fills = self.possibleFills(pre)
             if possible_fills:
                 word, cost = min([(w, self.wordCost(w)) for w in possible_fills], key=lambda x: x[1])
-                result += [(word, (idx + 1, post, word), cost)]
+                result += [(word, (post,), cost)]
         return result
         # END_YOUR_ANSWER
 
@@ -213,14 +213,12 @@ def makeHeuristic(query, wordCost, possibleFills):
     dp = util.DynamicProgramming(RelaxedProblem(query, wordCost, possibleFills))
     cache = {}
 
-    def f(x):
-        if x[2] not in cache:
-            cache[x[2]] = {}
-        if x[1] not in cache[x[2]]:
-            cache[x[2]][x[1]] = dp(x)
-        return cache[x[2]][x[1]]
+    def h(x):
+        if x[0] not in cache:
+            cache[x[0]] = dp(x)
+        return cache[x[0]]
 
-    return f
+    return h
     # END_YOUR_ANSWER
 
 def fastSegmentAndInsert(query, bigramCost, wordCost, possibleFills):
