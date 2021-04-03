@@ -193,7 +193,7 @@ class RelaxedProblem(util.SearchProblem):
 
     def isEnd(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        return len(state[1]) == 0
+        return True
         # END_YOUR_ANSWER
 
     def succAndCost(self, state):
