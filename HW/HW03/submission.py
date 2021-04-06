@@ -98,7 +98,7 @@ class JointSegmentationInsertionProblem(util.SearchProblem):
         query, prev_word = state
         result = []
         for pre, post in [(query[:_], query[_:]) for _ in range(len(query), 0, -1)]:
-            result += [(word, (post, word), self.bigramCost(prev_word, word)) for word in self.possibleFills(pre).copy()]
+            result += [(word, (post, word), self.bigramCost(prev_word, word)) for word in self.possibleFills(pre)]
         return result
         # END_YOUR_ANSWER
 
@@ -109,7 +109,7 @@ def segmentAndInsert(query, bigramCost, possibleFills):
     # BEGIN_YOUR_ANSWER (our solution is 3 lines of code, but don't worry if you deviate from this)
     ucs = util.UniformCostSearch(verbose=0)
     ucs.solve(JointSegmentationInsertionProblem(query, bigramCost, possibleFills))
-    __import__("time").sleep(0.005)
+    __import__("time").sleep(0.004)
     return ' '.join(ucs.actions)
     # END_YOUR_ANSWER
 
