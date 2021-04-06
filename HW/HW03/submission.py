@@ -2,7 +2,6 @@ import shell
 import util
 import wordsegUtil
 
-
 ############################################################
 # Problem 1a: Solve the segmentation problem under a unigram model
 
@@ -48,7 +47,7 @@ class VowelInsertionProblem(util.SearchProblem):
 
     def startState(self):
         # BEGIN_YOUR_ANSWER (our solution is 1 lines of code, but don't worry if you deviate from this)
-        return 0, self.queryWords[0], self.queryWords[1]
+        return 0, self.queryWords[0]
         # END_YOUR_ANSWER
 
     def isEnd(self, state):
@@ -58,11 +57,10 @@ class VowelInsertionProblem(util.SearchProblem):
 
     def succAndCost(self, state):
         # BEGIN_YOUR_ANSWER (our solution is 9 lines of code, but don't worry if you deviate from this)
-        idx, p_action, n_action = state
-        idx += 1
-        possible_fills = self.possibleFills(n_action)
-        words = possible_fills.copy() if len(possible_fills) != 0 else {n_action}
-        return [(_, (idx, _, self.queryWords[idx]), self.bigramCost(p_action, _)) for _ in words]
+        p_idx, p_action = state
+        possible_fills = self.possibleFills(self.queryWords[p_idx + 1])
+        words = possible_fills if len(possible_fills) != 0 else {self.queryWords[p_idx + 1]}
+        return [(_, (p_idx + 1, _), self.bigramCost(p_action, _)) for _ in words]
         # END_YOUR_ANSWER
 
 def insertVowels(queryWords, bigramCost, possibleFills):
@@ -111,7 +109,7 @@ def segmentAndInsert(query, bigramCost, possibleFills):
     # BEGIN_YOUR_ANSWER (our solution is 3 lines of code, but don't worry if you deviate from this)
     ucs = util.UniformCostSearch(verbose=0)
     ucs.solve(JointSegmentationInsertionProblem(query, bigramCost, possibleFills))
-
+    __import__("time").sleep(0.005)
     return ' '.join(ucs.actions)
     # END_YOUR_ANSWER
 
@@ -165,16 +163,9 @@ def makeWordCost(bigramCost, wordPairs):
     cache = {}
     bigram_cache = {}
 
-    def _bigramCost(a, b):
-        if b not in bigram_cache:
-            bigram_cache[b] = {}
-        if a not in bigram_cache[b]:
-            bigram_cache[b][a] = bigramCost(a, b)
-        return bigram_cache[b][a]
-
     def word_cost(x):
         if x not in cache:
-            cache[x] = min([_bigramCost(pair[0], x) for pair in wordPairs if pair[1] == x])
+            cache[x] = min([bigramCost(a, x) for a, b in wordPairs if b == x])
         return cache[x]
 
     return word_cost
