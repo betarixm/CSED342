@@ -177,7 +177,12 @@ class Qlearning(util.RLAlgorithm):
             return
 
         # BEGIN_YOUR_ANSWER (our solution is 8 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        target = reward + self.discount * (max([self.getQ(newState, new_action) for new_action in self.actions(newState)]) if state is not None else 0)
+        prediction = self.getQ(state, action)
+        coefficient = self.getStepSize() * (prediction - target)
+
+        for key, value in self.featureExtractor(state, action):
+            self.weights[key] -= coefficient * value
         # END_YOUR_ANSWER
 
 
