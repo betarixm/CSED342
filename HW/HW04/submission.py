@@ -44,7 +44,47 @@ class BlackjackMDP(util.MDP):
     # in the list returned by succAndProbReward.
     def succAndProbReward(self, state, action):
         # BEGIN_YOUR_ANSWER (our solution is 44 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        def deck_after_peek(_card, _deck):
+            deck = list(_deck)
+            deck[_card] -= 1
+            return tuple(deck)
+
+        def peek(_card, _deck, _total_card_value_in_hand):
+            deck = deck_after_peek(_card, _deck)
+            value_in_hand = _total_card_value_in_hand + self.cardValues[_card]
+            reward = value_in_hand if sum(deck) == 0 else 0
+
+            return deck, value_in_hand, reward
+
+        result = []
+
+        total_card_value_in_hand, next_card_index_if_peeked, deck_card_counts = state
+        is_peeked = next_card_index_if_peeked is not None
+
+        if deck_card_counts is None:
+            return []
+
+        if action == 'Take' and is_peeked:
+            next_deck, next_value_in_hand, next_reward = peek(next_card_index_if_peeked, deck_card_counts, total_card_value_in_hand)
+            is_finish = next_value_in_hand > self.threshold or sum(next_deck) == 0
+            result += [((next_value_in_hand, None, None if is_finish else next_deck), 1.0, 0)]
+
+        elif action == 'Take' and not is_peeked:
+            num_cards = sum(deck_card_counts)
+            for card, cnt in enumerate(deck_card_counts):
+                if cnt <= 0:
+                    continue
+                next_deck, next_value_in_hand, next_reward = peek(card, deck_card_counts, total_card_value_in_hand)
+                is_finish = next_value_in_hand > self.threshold or sum(next_deck) == 0
+                result += [((next_value_in_hand, None, None if is_finish else next_deck), cnt / num_cards, next_reward)]
+
+        elif action == 'Peek' and not is_peeked:
+            result += [((total_card_value_in_hand, card, deck_card_counts), cnt/sum(deck_card_counts), -self.peekCost) for card, cnt in enumerate(deck_card_counts) if cnt > 0]
+
+        elif action == 'Quit' or sum(deck_card_counts) == 0:
+            result += [((0, None, None), 1.0, 0 if total_card_value_in_hand > self.threshold else total_card_value_in_hand)]
+
+        return result
         # END_YOUR_ANSWER
 
     def discount(self):
