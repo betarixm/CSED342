@@ -104,7 +104,7 @@ class ValueIterationDP(ValueIteration):
         cache = {}
 
         def value_iter(_s, _cache):
-            values = {}
+            values = []
             for action in mdp.actions(_s):
                 n = 0
                 for next_state, prob, reward in mdp.succAndProbReward(_s, action):
@@ -113,8 +113,8 @@ class ValueIterationDP(ValueIteration):
                     if next_state not in _cache:
                         _cache[next_state] = value_iter(next_state, cache)
                     n += prob * (reward + _cache[next_state])
-                values[action] = n
-            V[_s] = max(values.values())
+                values += [n]
+            V[_s] = max(values)
             return V[_s]
 
         value_iter(mdp.startState(), cache)
