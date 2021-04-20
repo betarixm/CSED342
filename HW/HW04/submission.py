@@ -101,7 +101,23 @@ class ValueIterationDP(ValueIteration):
         V = {}  # state -> value of state
 
         # BEGIN_YOUR_ANSWER (our solution is 13 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        cache = {}
+
+        def value_iter(_s, _cache):
+            values = {}
+            for action in mdp.actions(_s):
+                n = 0
+                for next_state, prob, reward in mdp.succAndProbReward(_s, action):
+                    if prob == 0:
+                        continue
+                    if next_state not in _cache:
+                        _cache[next_state] = value_iter(next_state, cache)
+                    n += prob * (reward + _cache[next_state])
+                values[action] = n
+            V[_s] = max(values.values())
+            return V[_s]
+
+        value_iter(mdp.startState(), cache)
         # END_YOUR_ANSWER
 
         # Compute the optimal policy now
