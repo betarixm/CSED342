@@ -195,7 +195,32 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
     """
 
     # BEGIN_YOUR_ANSWER (our solution is 42 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    def alpha_cut(alpha, beta, value):
+      return max(alpha, value), beta, value > beta
+
+    def beta_cut(alpha, beta, value):
+      return alpha, min(beta, value), value < alpha
+
+    def estimate(state, agent, objective, opposite, depth, alpha, beta, cut_f, sub_f):
+      if state.isLose() or state.isWin():
+        return state.getScore(), None
+      elif depth <= 0:
+        return self.evaluationFunction(state), None
+
+      next_agent, depth = (0, depth - 1) if (agent + 1) == state.getNumAgents() else (agent + 1, depth)
+      next_state = (opposite(float('inf'), float('-inf')), Directions.STOP)
+
+      for action in state.getLegalActions(agent):
+        candidate = (estimate(
+          state.generateSuccessor(agent, action), next_agent, opposite, objective, depth, alpha, beta, sub_f, cut_f
+        )[0], action)
+        next_state = candidate if objective(candidate[0], next_state[0]) == candidate[0] else next_state
+        alpha, beta, is_cut = cut_f(alpha, beta, next_state[0])
+        if is_cut:
+          break
+      return next_state
+
+    return estimate(gameState, 0, max, min, self.depth, float("-inf"), float("inf"), alpha_cut, beta_cut)[1]
     # END_YOUR_ANSWER
 
 ######################################################################################
