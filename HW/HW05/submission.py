@@ -165,7 +165,20 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
 
     # BEGIN_YOUR_ANSWER (our solution is 30 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    def estimate(state, agent, objective, opposite, depth):
+      if state.isLose() or state.isWin():
+        return state.getScore(), None
+      elif depth <= 0:
+        return self.evaluationFunction(state), None
+
+      next_agent, depth = (0, depth - 1) if (agent + 1) == state.getNumAgents() else (agent + 1, depth)
+      return objective([(opposite(float('inf'), float('-inf')), Directions.STOP)] + [
+        (estimate(
+          state.generateSuccessor(agent, action), next_agent, opposite, objective, depth
+        )[0], action) for action in state.getLegalActions(agent)
+      ], key=lambda x: x[0])
+
+    return estimate(gameState, 0, max, min, self.depth)[1]
     # END_YOUR_ANSWER
 
 ######################################################################################
