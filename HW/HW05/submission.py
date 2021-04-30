@@ -202,14 +202,10 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
       return alpha, min(beta, value), value < alpha
 
     def successor(state, agent, next_agent, depth, alpha, beta, action):
-      if next_agent == 0:
-        return estimate(
-          state.generateSuccessor(agent, action), next_agent, max, min, depth, alpha, beta, alpha_cut
-        )[0], action
-      else:
-        return estimate(
-          state.generateSuccessor(agent, action), next_agent, min, max, depth, alpha, beta, beta_cut
-        )[0], action
+      is_player = next_agent == 0
+      return estimate(
+        state.generateSuccessor(agent, action), next_agent, max if is_player else min, min if is_player else max, depth, alpha, beta, alpha_cut if is_player else beta_cut
+      )[0], action
 
     def estimate(state, agent, objective, opposite, depth, alpha, beta, cut_f):
       if state.isLose() or state.isWin() or depth <= 0:
