@@ -277,7 +277,43 @@ def betterEvaluationFunction(currentGameState):
     """
 
     # BEGIN_YOUR_ANSWER (our solution is 60 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    n_agents = currentGameState.getNumAgents()
+
+    p_capsules = currentGameState.getCapsules()
+    p_pacman = currentGameState.getPacmanPosition()
+    p_ghosts = currentGameState.getGhostPositions()
+
+    s_ghosts = currentGameState.getGhostStates()
+
+    g_food = currentGameState.getFood().asList()
+    g_walls = currentGameState.getWalls()
+
+    scared_ghosts = [g for g in s_ghosts if g.scaredTimer]
+    normal_ghosts = [g for g in s_ghosts if not g.scaredTimer]
+
+    food_distances = [manhattanDistance(p_pacman, food) for food in g_food] + [0]
+    capsule_distances = [manhattanDistance(p_pacman, capsule) for capsule in p_capsules] + [0]
+    scared_ghost_distances = [manhattanDistance(p_pacman, ghost.getPosition()) for ghost in scared_ghosts] + [0]
+    normal_ghost_distances = [manhattanDistance(p_pacman, ghost.getPosition()) for ghost in normal_ghosts] + [0]
+
+    sum_food = sum(food_distances)
+    fit_food = min(food_distances)
+    num_food = len(food_distances) - 1
+
+    sum_capsule = sum(capsule_distances)
+    fit_capsule = min(capsule_distances)
+    num_capsule = len(capsule_distances) - 1
+
+    sum_scared = sum(scared_ghost_distances)
+    fit_scared = min(scared_ghost_distances)
+
+    sum_normal = sum(normal_ghost_distances)
+    fit_normal = min(normal_ghost_distances)
+
+    weight = [1.5, 4, 0, 20, 2, 2]
+    phi = [fit_food, num_food, fit_capsule, num_capsule, fit_scared, (1.0 / len(s_ghosts))]
+
+    return scoreEvaluationFunction(currentGameState) - sum([p * w for p in phi for w in weight])
     # END_YOUR_ANSWER
 
 # Abbreviation
