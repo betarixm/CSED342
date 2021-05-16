@@ -316,7 +316,29 @@ def get_sum_variable(csp, name, variables, maxSum):
         iff the assignment of |variables| sums to |n|.
     """
     # BEGIN_YOUR_ANSWER (our solution is 28 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    result = ('sum', name, 'result')
+
+    if len(variables) == 0:
+        csp.add_variable(result, [0])
+        return result
+
+    csp.add_variable(result, range(maxSum + 1))
+
+    domain, v_prev = [(0, 0)], None
+
+    induced = [(v, csp.values[v], ('sum', name, i)) for i, v in enumerate(variables)]
+
+    for v, v_domain, v_induced in induced:
+        domain = list(filter(lambda x: x[1] <= maxSum, set([(prev[1], prev[1] + cur) for prev in domain for cur in v_domain])))
+        csp.add_variable(v_induced, domain)
+        if v_prev:
+            csp.add_binary_factor(v_prev, v_induced, lambda x, y: x[1] == y[0])
+        csp.add_binary_factor(v, v_induced, lambda x, y: y[1] == x + y[0])
+        v_prev = v_induced
+
+    csp.add_binary_factor(induced[-1][2], result, lambda x, y: x[1] == y)
+
+    return result
     # END_YOUR_ANSWER
 
 def create_lightbulb_csp(buttonSets, numButtons):
