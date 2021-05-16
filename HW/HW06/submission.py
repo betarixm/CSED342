@@ -268,7 +268,27 @@ class BacktrackingSearch():
         #   (self.csp.binaryFactors[var1][var2] returns a nested dict of all assignments)
 
         # BEGIN_YOUR_ANSWER (our solution is 19 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        def binary_required(_x_i, _x_j, _x):
+            for _y in self.domains[_x_j]:
+                if self.csp.binaryFactors[_x_i][_x_j][_x][_y]:
+                    return True
+            return False
+
+        def unary_required(_x_i, _x):
+            return (self.csp.unaryFactors[_x_i] is None) or (self.csp.unaryFactors[_x_i][_x] != 0)
+
+        def enforce(_x_i, _x_j):
+            return [x for x in self.domains[_x_i] if binary_required(_x_i, _x_j, x) and unary_required(_x_i, x)]
+
+        s = [var]
+
+        while s:
+            x_j = s.pop(0)
+            for x_i in self.csp.get_neighbor_vars(x_j):
+                enforced = enforce(x_i, x_j)
+                if len(enforced) != len(self.domains[x_i]):
+                    self.domains[x_i] = enforced
+                    s.append(x_i)
         # END_YOUR_ANSWER
 
 
