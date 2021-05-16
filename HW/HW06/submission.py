@@ -13,7 +13,10 @@ def create_chain_csp(n):
     csp = util.CSP()
     # Problem 0a
     # BEGIN_YOUR_ANSWER (our solution is 4 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    csp.add_variable(variables[0], domain)
+    for a, b in zip(variables[:-1], variables[1:]):
+        csp.add_variable(b, domain)
+        csp.add_binary_factor(a, b, lambda x, y: x ^ y)
     # END_YOUR_ANSWER
     return csp
 
