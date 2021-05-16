@@ -361,6 +361,9 @@ def create_lightbulb_csp(buttonSets, numButtons):
 
     # Problem 2b
     # BEGIN_YOUR_ANSWER (our solution is 15 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    for v_btn in range(numButtons):
+        csp.add_variable(v_btn, [0, 1])
+    for v_bulb in [get_sum_variable(csp, i, T_i, numButtons) for i, T_i in enumerate([list(s) for s in buttonSets])]:
+        csp.add_unary_factor(v_bulb, lambda x: x % 2 == 1)
     # END_YOUR_ANSWER
     return csp
