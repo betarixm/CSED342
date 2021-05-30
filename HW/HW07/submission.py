@@ -22,7 +22,16 @@ def get_conditional_prob1(delta, epsilon, eta, c2, d2):
     """
     # Problem 1a
     # BEGIN_YOUR_ANSWER (our solution is 14 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    def p_start(c):
+        return delta if c == 0 else (1 - delta)
+
+    def p_emit(d, c):
+        return eta if d != c else (1 - eta)
+
+    def p_margin(c_2, d_2):
+        return p_start(c_2) * p_emit(d_2, c_2) / p_start(d_2)
+
+    return p_margin(c2, d2) * (1 / sum([p_margin(0, d2), p_margin(1, d2)]))
     # END_YOUR_ANSWER
 
 def get_conditional_prob2(delta, epsilon, eta, c2, d2, d3):
