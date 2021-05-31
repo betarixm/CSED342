@@ -88,7 +88,7 @@ def get_epsilon():
 # Maintain and update a belief distribution over the probability of a car
 # being in a tile using exact updates (correct, but slow times).
 class ExactInference(object):
-    
+
     # Function: Init
     # --------------
     # Constructer that initializes an ExactInference object which has
@@ -99,8 +99,8 @@ class ExactInference(object):
         # inference state of a single car (see util.py).
         self.belief = util.Belief(numRows, numCols)
         self.transProb = util.loadTransProb()
-   
-     
+
+
     ############################################################
     # Problem 2: 
     # Function: Observe (update the probablities based on an observation)
@@ -153,7 +153,15 @@ class ExactInference(object):
     def elapseTime(self):
         if self.skipElapse: return ### ONLY FOR THE GRADER TO USE IN Problem 2
         # BEGIN_YOUR_ANSWER (our solution is 8 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        belief = util.Belief(self.belief.numRows, self.belief.numCols, value=0)
+
+        def p_trans(prev, nxt):
+            return self.belief.getProb(*prev) * self.transProb[(prev, nxt)]
+
+        for _prev, _next in self.transProb:
+            belief.addProb(*_next, p_trans(_prev, _next))
+
+        _, self.belief = belief.normalize(), belief
         # END_YOUR_ANSWER
       
     # Function: Get Belief
@@ -163,15 +171,15 @@ class ExactInference(object):
     def getBelief(self):
         return self.belief
 
-        
+
 # Class: Particle Filter
 # ----------------------
 # Maintain and update a belief distribution over the probability of a car
 # being in a tile using a set of particles.
 class ParticleFilter(object):
-    
+
     NUM_PARTICLES = 200
-    
+
     # Function: Init
     # --------------
     # Constructer that initializes an ParticleFilter object which has
@@ -187,14 +195,14 @@ class ParticleFilter(object):
             if not oldTile in self.transProbDict:
                 self.transProbDict[oldTile] = collections.defaultdict(int)
             self.transProbDict[oldTile][newTile] = self.transProb[(oldTile, newTile)]
-            
+
         # Initialize the particles randomly
         self.particles = collections.defaultdict(int)
         potentialParticles = list(self.transProbDict.keys())
         for i in range(self.NUM_PARTICLES):
             particleIndex = int(random.random() * len(potentialParticles))
             self.particles[potentialParticles[particleIndex]] += 1
-            
+
         self.updateBelief()
 
     # Function: Update Belief
@@ -208,7 +216,7 @@ class ParticleFilter(object):
             newBelief.setProb(tile[0], tile[1], self.particles[tile])
         newBelief.normalize()
         self.belief = newBelief
-    
+
     ############################################################
     # Problem 4 (part a): 
     # Function: Observe:
@@ -243,7 +251,7 @@ class ParticleFilter(object):
         raise NotImplementedError  # remove this line before writing code
         # END_YOUR_ANSWER
         self.updateBelief()
-    
+
     ############################################################
     # Problem 4 (part b): 
     # Function: Elapse Time (propose a new belief distribution based on a learned transition model)
@@ -268,7 +276,7 @@ class ParticleFilter(object):
         # BEGIN_YOUR_ANSWER (our solution is 7 lines of code, but don't worry if you deviate from this)
         raise NotImplementedError  # remove this line before writing code
         # END_YOUR_ANSWER
-        
+
     # Function: Get Belief
     # ---------------------
     # Returns your belief of the probability that the car is in each tile. Your
