@@ -121,7 +121,16 @@ class ExactInference(object):
 
     def observe(self, agentX, agentY, observedDist):
         # BEGIN_YOUR_ANSWER (our solution is 9 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        def prob(row, col):
+            self.belief.setProb(
+                row, col, self.belief.getProb(row, col) * util.pdf(
+                    math.sqrt((agentX - util.colToX(col)) ** 2 + (agentY - util.rowToY(row)) ** 2), Const.SONAR_STD, observedDist
+                )
+            )
+
+        [prob(r, c) for r in range(self.belief.getNumRows()) for c in range(self.belief.getNumCols())]
+
+        self.belief.normalize()
         # END_YOUR_ANSWER
 
     ############################################################
