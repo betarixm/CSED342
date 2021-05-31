@@ -47,7 +47,24 @@ def get_conditional_prob2(delta, epsilon, eta, c2, d2, d3):
     """
     # Problem 1b
     # BEGIN_YOUR_ANSWER (our solution is 17 lines of code, but don't worry if you deviate from this)
-    raise NotImplementedError  # remove this line before writing code
+    def p_start(c):
+        return delta if c == 0 else (1 - delta)
+
+    def p_trans(c_b, c_a):
+        return epsilon if c_b != c_a else (1 - epsilon)
+
+    def p_emit(d, c):
+        return eta if d != c else (1 - eta)
+
+    def p_margin(c_2, d_2, d_3):
+        return sum([
+            p_start(c_1) * p_emit(d_1, c_1) * p_trans(c_2, c_1) * p_emit(d_2, c_2) * p_trans(c_3, c_2) * p_emit(d_3, c_3)
+            for c_3 in [0, 1] for d_1 in [0, 1] for c_1 in [0, 1]
+        ])
+
+    return p_margin(c2, d2, d3) * (1 / sum([
+        p_margin(0, d2, d3), p_margin(1, d2, d3)
+    ]))
     # END_YOUR_ANSWER
 
 # Problem 1c
