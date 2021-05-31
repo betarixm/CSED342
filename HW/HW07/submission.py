@@ -282,13 +282,9 @@ class ParticleFilter(object):
     ############################################################
     def elapseTime(self):
         # BEGIN_YOUR_ANSWER (our solution is 7 lines of code, but don't worry if you deviate from this)
-        result = collections.Counter()
-        for (row, col), value in {key: value for key, value in self.particles.items() if key in self.transProbDict}.items():
-            result.update(dict(collections.Counter(
-                [util.weightedRandomChoice(self.transProbDict[(row, col)]) for _ in range(value)]
-            )))
-
-        self.particles, _ = collections.defaultdict(int, result), self.updateBelief()
+        self.particles, _ = collections.defaultdict(int, collections.Counter(
+            [util.weightedRandomChoice(self.transProbDict[(row, col)]) for (row, col), value in self.particles.items() for _ in range(value) if (row, col) in self.transProbDict]
+        )), self.updateBelief()
         # END_YOUR_ANSWER
 
     # Function: Get Belief
