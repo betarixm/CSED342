@@ -248,7 +248,15 @@ class ParticleFilter(object):
     ############################################################
     def observe(self, agentX, agentY, observedDist):
         # BEGIN_YOUR_ANSWER (our solution is 12 lines of code, but don't worry if you deviate from this)
-        raise NotImplementedError  # remove this line before writing code
+        reweighted = {
+            (row, col): value * util.pdf(math.sqrt((util.rowToY(row) - agentY) ** 2 + (util.colToX(col) - agentX) ** 2), Const.SONAR_STD, observedDist)
+            for (row, col), value in self.particles.items()
+        }
+
+        self.particles = collections.defaultdict(int, collections.Counter(
+            [util.weightedRandomChoice(reweighted) for _ in range(self.NUM_PARTICLES)]
+        ))
+
         # END_YOUR_ANSWER
         self.updateBelief()
 
