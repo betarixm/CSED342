@@ -23,7 +23,7 @@ def formula1b():
     Wet = Atom('Wet')                # whether it it wet
     Sprinklers = Atom('Sprinklers')  # whether the sprinklers are on
     # BEGIN_YOUR_CODE (our solution is 1 line of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    return And(Implies(Wet, Or(Rain, Sprinklers)), Implies(Or(Rain, Sprinklers), Wet))
     # END_YOUR_CODE
 
 # Sentence: "Either it's day or night (but not both)."
