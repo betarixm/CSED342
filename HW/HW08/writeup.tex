@@ -3,24 +3,41 @@
 
 \begin{document}
 
-\begin{center}
-{\Large CSED342 Spring 2021 Homework 8 \vspace{10pt}}
+  \begin{center}
+  {\Large CSED342 Spring 2021 Homework 8 \vspace{10pt}}
 
-\begin{tabular}{rl}
-Student ID: & [your student ID] \\
-Name: & [your first and last name] \\
-\end{tabular}
-\end{center}
+    \begin{tabular}{rl}
+      Student ID: & 20190084 \\
+      Name: & Minjae Gwon \\
+    \end{tabular}
+  \end{center}
 
-By turning in this assignment, I agree by the POSTECH honor code and declare that all of this is my own work.
+  By turning in this assignment, I agree by the POSTECH honor code and declare that all of this is my own work.
 
-\section*{Problem 2}
+  \section*{Problem 2}
 
-\begin{enumerate}[label=(\alph*)]
-  \item (your solution)
+  \begin{enumerate}[label=(\alph*)]
+  \item Show that $C$ could be derived within given knowledge base $\mathrm{KB}$.
+  \begin{enumerate}[label=(\roman*)]
+  \item Firstly, convert $\mathrm{KB}$ into CNF.
+  \begin{align*}
+    \frac{(A \lor B) \rightarrow C}{\lnot(A \lor B) \lor C} & \quad (\because P \rightarrow Q \text{ is equivalent to } \lnot P \lor Q)\\
+    \frac{\lnot(A \lor B) \lor C}{(\lnot A \land \lnot B) \lor C} & \quad (\because \lnot(P \lor Q) \text{ is equivalent to } (\lnot P \land \lnot Q)) \\
+    \frac{(\lnot A \land \lnot B) \lor C}{(\lnot A \lor C) \land (\lnot B \lor C)} & \quad (\because (P \land Q) \lor R \text{ is equivalent to } (P \lor R) \land (Q \lor R))
+  \end{align*}
+  Therefore, given knowledge base $\mathrm{KB}$ can be expressed in the following CNF.
+  \[\mathrm{KB}' = \{(\lnot A \lor C) \land (\lnot B \lor C), A\}\]
+  \item Lastly, inference from the derived formula.
+  \begin{align*}
+    \{(\lnot A \lor C) \land (\lnot B \lor C), A\} &\iff \{(A \rightarrow C) \land (B \rightarrow C), A\} \\
+    &\iff \{A \rightarrow C, B \rightarrow C, A\}
+  \end{align*}
+  \end{enumerate}
+  From $\mathrm{(ii)}$, $\mathrm{KB}'$ is equivalent to $\{A \rightarrow C, B \rightarrow C, A\}$, and it satisfies $\frac{A \rightarrow C, A}{C}$ (Modus ponens). It means $C$ can be derived from $\mathrm{KB}'$ by modus ponens. Also, using $\mathrm{(i)}$, $\mathrm{KB}'$ is equivalent to $\mathrm{KB}$, thus $C$ can be derived within $\mathrm{KB}$. \quad $\square$
 
 
-\end{enumerate}
+
+  \end{enumerate}
 
 \end{document}
 
