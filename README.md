@@ -28,3 +28,28 @@
 - Q Learning
 
 [Link](HW/HW04)
+
+### Multi-agent Pac-Man
+- Minimax
+- Alpha-beta pruning
+- Expectimax
+
+[Link](HW/HW05)
+
+### Constraint Satisfaction Problems
+- CSP solving
+- Handling n-ary factors
+
+[Link](HW/HW06)
+
+### Car Tracking
+- Bayesian Network
+- Particle Filtering
+
+[Link](HW/HW07)
+
+### From Language to Logic
+- Propositional logic
+- Logical Inference
+
+[Link](HW/HW08)
